@@ -14,10 +14,10 @@ public class ConversationDb {
     private long id;
 
     @Column(nullable = false)
-    private long firstParticipantId;
+    private String firstParticipantId;
 
     @Column(nullable=false)
-    private long secondParticipantId;
+    private String secondParticipantId;
 
     // Inverse side
     @OneToMany(mappedBy = "conversationId", cascade = CascadeType.ALL)
@@ -25,7 +25,7 @@ public class ConversationDb {
 
     public ConversationDb(){}
 
-    public ConversationDb(long firstParticipantId, long secondParticipantId) {
+    public ConversationDb(String firstParticipantId, String secondParticipantId) {
         this.firstParticipantId = firstParticipantId;
         this.secondParticipantId = secondParticipantId;
     }
@@ -38,11 +38,11 @@ public class ConversationDb {
         messageDbs.add(messageDb);
     }
 
-    public long getFirstParticipantId() {
+    public String getFirstParticipantId() {
         return firstParticipantId;
     }
 
-    public long getSecondParticipantId() {
+    public String getSecondParticipantId() {
         return secondParticipantId;
     }
 
@@ -54,11 +54,11 @@ public class ConversationDb {
         this.id = id;
     }
 
-    public void setFirstParticipantId(long firstParticipantId) {
+    public void setFirstParticipantId(String firstParticipantId) {
         this.firstParticipantId = firstParticipantId;
     }
 
-    public void setSecondParticipantId(long secondParticipantId) {
+    public void setSecondParticipantId(String secondParticipantId) {
         this.secondParticipantId = secondParticipantId;
     }
 

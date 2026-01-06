@@ -19,18 +19,23 @@ public class ConversationController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/createConversation")
-    public ConversationDb createConversation(@RequestBody ConversationDb conversation){
-        return conversationService.createConversation(conversation);
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
+    @PostMapping("/createConversation/{firstParticipantId}/{secondParticipantId}")
+    public ConversationDb createConversation(@PathVariable String firstParticipantId, @PathVariable String secondParticipantId) {
+        return conversationService.createConversation(new ConversationDb(firstParticipantId, secondParticipantId));
     }
 
     @GetMapping("/getMyConversations/{userId}")
-    public List<ConversationDb> getMyConversations(@PathVariable Long userId) {
+    public List<ConversationDb> getMyConversations(@PathVariable String userId) {
         return conversationService.getAllConversations(userId);
     }
 
     @GetMapping("/getConversationByUsers/{firstUserId}/{secondUserId}")
-    public ConversationDb getConversationByUsers(@PathVariable Long firstUserId, @PathVariable Long secondUserId){
+    public ConversationDb getConversationByUsers(@PathVariable String firstUserId, @PathVariable String secondUserId){
         return conversationService.getConversationFromParticipants(firstUserId, secondUserId);
     }
 

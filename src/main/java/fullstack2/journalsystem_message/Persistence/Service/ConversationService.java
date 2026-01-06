@@ -25,13 +25,13 @@ public class ConversationService {
         return conversationRepository.getReferenceById(id);
     }
 
-    public ConversationDb getConversationFromParticipants(long firstUserId, long secondUserId){
+    public ConversationDb getConversationFromParticipants(String firstUserId, String secondUserId){
         ConversationDb firstTry = conversationRepository.findByFirstParticipantIdAndSecondParticipantId(firstUserId, secondUserId);
         if(firstTry != null) return firstTry;
         return conversationRepository.findByFirstParticipantIdAndSecondParticipantId(secondUserId, firstUserId);
     }
 
-    public List<ConversationDb> getAllConversations(long userId){
+    public List<ConversationDb> getAllConversations(String userId){
         List<ConversationDb> conversations = conversationRepository.findAllByFirstParticipantId(userId);
         conversations.addAll(conversationRepository.findAllBySecondParticipantId(userId));
         return conversations;

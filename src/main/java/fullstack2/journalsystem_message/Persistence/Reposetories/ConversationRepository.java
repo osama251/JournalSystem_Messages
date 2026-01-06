@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ConversationRepository extends JpaRepository<ConversationDb, Long> {
-    ConversationDb findByFirstParticipantId(long id);
-    ConversationDb findBySecondParticipantId(long id);
+    ConversationDb findByFirstParticipantId(String id);
+    ConversationDb findBySecondParticipantId(String id);
 
-    ConversationDb findByFirstParticipantIdAndSecondParticipantId(Long firstParticipantId, Long secondParticipantId);
+    ConversationDb findByFirstParticipantIdAndSecondParticipantId(String firstParticipantId, String secondParticipantId);
 
-    List<ConversationDb> findAllByFirstParticipantId(Long id);
-    List<ConversationDb> findAllBySecondParticipantId(Long id);
+    List<ConversationDb> findAllByFirstParticipantId(String id);
+    List<ConversationDb> findAllBySecondParticipantId(String id);
 
 }

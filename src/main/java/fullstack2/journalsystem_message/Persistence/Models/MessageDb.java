@@ -15,7 +15,7 @@ public class MessageDb {
     private LocalDateTime sendDate;
 
     @Column(nullable=false)
-    private long senderId;
+    private String senderId;
 
     @ManyToOne()
     @JoinColumn(name = "conversationId", nullable = false)
@@ -27,14 +27,14 @@ public class MessageDb {
 
     public MessageDb(){}
 
-    public MessageDb(LocalDateTime sendDate, long senderId, ConversationDb conversationId, String message) {
+    public MessageDb(LocalDateTime sendDate, String senderId, ConversationDb conversationId, String message) {
         this.sendDate = sendDate;
         this.senderId = senderId;
         this.conversationId = conversationId;
         this.message = message;
     }
 
-    public MessageDb(long senderId, ConversationDb conversationId, String message) {
+    public MessageDb(String senderId, ConversationDb conversationId, String message) {
         this.sendDate = LocalDateTime.now();
         this.senderId = senderId;
         this.conversationId = conversationId;
@@ -49,7 +49,7 @@ public class MessageDb {
         return sendDate;
     }
 
-    public long getSenderId() {
+    public String getSenderId() {
         return senderId;
     }
 
@@ -69,7 +69,7 @@ public class MessageDb {
         this.sendDate = sendDate;
     }
 
-    public void setSenderId(long senderId) {
+    public void setSenderId(String senderId) {
         this.senderId = senderId;
     }
 

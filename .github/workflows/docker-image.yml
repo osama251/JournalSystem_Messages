@@ -1,23 +1,29 @@
-name: Build, Test, Push Image
+name: CI/CD - Message Service
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-test-push:
+  build-test-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
+          cache: maven
 
       - name: Run unit tests
-        run: mvn -B test
+        run: mvn -q test
+
+      - name: Build jar (skip tests)
+        run: mvn -q -DskipTests package
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -28,10 +34,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push (multi-arch)
+      - name: Build & Push image (multi-arch)
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: Dockerfile
           push: true
-          tags: osama251/journalmessage-backend:latest
           platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.IMAGE_NAME }}:latest
+            ${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deploy on VM (k3s)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          port: ${{ secrets.VM_PORT }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -e
+            kubectl -n ${{ secrets.K8S_NAMESPACE }} set image deployment/${{ secrets.K8S_DEPLOYMENT }} \
+              ${{ secrets.K8S_CONTAINER }}=${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+            kubectl -n ${{ secrets.K8S_NAMESPACE }} rollout status deployment/${{ secrets.K8S_DEPLOYMENT }}

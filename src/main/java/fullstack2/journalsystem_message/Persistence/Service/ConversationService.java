@@ -18,6 +18,10 @@ public class ConversationService {
 
     @Transactional
     public ConversationDb createConversation(ConversationDb conversationDb){
+        ConversationDb existingConvo = getConversationFromParticipants(conversationDb.getFirstParticipantId(), conversationDb.getSecondParticipantId());
+        if(existingConvo != null){
+            return existingConvo;
+        }
         return conversationRepository.save(conversationDb);
     }
 

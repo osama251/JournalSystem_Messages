@@ -21,9 +21,12 @@ public class MessageService {
     }
 
     @Transactional
-    public MessageDb createMessage(MessageDb messageDb, long conversationId){
-        ConversationDb conversationDb = conversationRepository.getReferenceById(conversationId);
-        
+    public MessageDb createMessage(MessageDb messageDb, long conversationId) throws RuntimeException{
+        ConversationDb conversationDb = conversationRepository
+                .findById(conversationId)
+                .orElseThrow(() ->
+                        new RuntimeException("Conversation not found: " + conversationId)
+                );
         messageDb.setConversationId(conversationDb);
         return messageRepository.save(messageDb);
     }

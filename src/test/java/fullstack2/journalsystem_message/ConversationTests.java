@@ -43,8 +43,8 @@ class ConversationTests {
 
     @BeforeEach
     void init(){
-      String firstParticipantId = "-1";
-      String  secondParticipantId = "-2";
+      firstParticipantId = "-1";
+      secondParticipantId = "-2";
       testMessage = new MessageDb("-1", new ConversationDb(firstParticipantId, secondParticipantId), "Test message");
     }
 

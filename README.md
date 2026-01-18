@@ -42,16 +42,18 @@ This service is meant to be consumed by a frontend and/or other backend services
 
 ---
 
-Kubernetes
-  - This repo is deployed as part of the project’s Kubernetes setup.
-  - See JournalSystem_Q8SFILES for the manifests used in deployment.
+## Kubernetes
 
-CI/CD
-	-	On push to main, GitHub Actions:
-	-	runs unit tests
-	-	builds the JAR
-	-	builds and pushes a Docker image (tagged with commit SHA)
-	-	deploys to a VM (k3s) via SSH and updates the Kubernetes deployment
+- This service is deployed as part of the project’s Kubernetes (k3s) setup
+- Deployment manifests are managed in the `JournalSystem_Q8SFILES` repository
+
+## CI/CD
+
+- On push to `main`, GitHub Actions:
+  - runs unit tests
+  - builds the JAR
+  - builds and pushes a Docker image (tagged with commit SHA)
+  - deploys to a VM (k3s) via SSH and updates the Kubernetes deployment
   
 ---
 
